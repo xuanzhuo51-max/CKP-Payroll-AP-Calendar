@@ -33,9 +33,14 @@ The calendar work lives in two sections added alongside the original `Client Lis
 | `Due-day_push` | Automation | Due-day notification |
 | `Overdue` | Automation | End-of-day escalation to Team Lead |
 
-Deployed fields on `Payroll_Calendar_Events` include `Event Title`, `Role`, `Payment Mode`, `Headcount`, `Team Lead`, `Relationship Manager`, `Description`, `Task Status`, `Reminder Date`.
+The two payroll tables are not duplicates. `Payroll_Calendar_Events` answers "what must I do today" — one deadline, one assignee, one status, which is what a notification needs. `Payroll_Calendar_Period` answers "whose cycle is running right now" — the calendar renders each client's month as a horizontal bar, which makes crunch weeks visible in a way a wall of single-day dots cannot. Automations fire from Events only.
+
+AP has no Period table by design: AP runs are independent point events, not a sequence, so a span bar would carry no information.
+
+**See `docs/lark_base_tables.md` for the full breakdown** — grain, fields, views, which table to use for which question, and the maintenance warning about Events and Period drifting apart.
 
 The **Gantt view** is a deployment addition not in the original spec. It reads the same `Start Date` / `End Date` pair as the calendar view and is the better view for seeing where a client's five payroll steps sit relative to each other.
+
 
 ---
 

@@ -62,21 +62,6 @@ Because one automation carries one offset value, steps with different lead times
   > Due {Start Date}, still `{Task Status}`. Assignee: {Assignee}.
   > Downstream steps in this payroll cycle are now at risk.
 
-### P4 — Salary payment pre-check
-- **Trigger:** `Start Date`, 1 day before, 14:00
-- **Condition:** `Critical` = `YES`
-- **Action:** Send to a Lark group chat `CKP Payroll — Payment Run`
-- **Message:**
-  > **[Payroll] Salary payment tomorrow — {Client}**
-  > Pay date: {Start Date} · Mode: {Payment Mode} · Headcount: {Headcount}
-  > Confirm client approval is received and the bank file is ready.
-  > RM: {Relationship Manager} · Team Lead: {Team Lead}
-
-### P5 — Weekly team digest
-- **Trigger:** Scheduled, every Monday 08:30
-- **Condition:** `Start Date` within the next 7 days
-- **Action:** Send grouped summary to `CKP Payroll — Theta` group
-- **Message:** count by `Assignee`, list of `Client` + `Step` + `Start Date`, plus any records still `Not Started` from last week.
 
 ---
 
@@ -107,15 +92,6 @@ Because one automation carries one offset value, steps with different lead times
   > **[AP] OVERDUE — {Client} · {Step}**
   > Due {Start Date}, still `{Task Status}`.
 
-### A4 — TBC cadence chase
-- **Trigger:** Scheduled, first working day of each month 09:00
-- **Condition:** `Status` = `TBC`
-- **Action:** Send to `Escalation Owner`, grouped by `Team`
-- **Message:**
-  > **[AP] Cadence still unconfirmed — {Team} team**
-  > These clients have no agreed AP schedule; the calendar is running on a placeholder date only:
-  > {Client list}
-  > Please confirm the listing and payment cadence with the account team and update `Cadence Rule`.
 
 ### A5 — Daily-run clients
 Framework Studio, Oneness Concept Wellness and Nu Best run every working day and generate roughly 390 events over six months. Excluding them from A1 and sending one consolidated 08:30 message instead keeps the channel usable.

@@ -2,7 +2,7 @@
 
 Turns the payroll and accounts-payable schedules buried in CKP's planning workbook into dated Lark Base calendars with automated deadline notifications.
 
-The planning sheet stores each client's schedule as free text — `22th`, `Last working day of the month`, `Mid-Month and Month-End`, `Weekly: Tue & Thu`. Those strings are readable but not actionable: nobody can see the week ahead, and nothing reminds a PIC that a deadline is today. This repo parses those rules, expands them into concrete dates, and produces the CSVs that were imported into Lark Base, where the calendar views and the automation engine take over.
+The planning sheet stores each client's schedule as free text — `22th`, `Last working day of the month`, `Mid-Month and Month-End`, `Weekly: Tue & Thu`. Those strings are readable but not actionable: nobody can see the week ahead, and nothing reminds a PIC that a deadline is today.
 
 **Status:** deployed and running.
 
@@ -10,7 +10,7 @@ The planning sheet stores each client's schedule as free text — `22th`, `Last 
 
 ## Deployment
 
-Lark Base: **CKP Planning Sheet R&D - Snapshot 02.09** (CKP → Zaim Syahmi, marked External)
+Lark Base: **CKP Planning Sheet R&D - Snapshot 02.09** (CKP → Zaim Syahmi)
 
 The calendar work lives in two sections added alongside the original `Client Listing` / `BD` / `Account Staff Planning` / `Payroll` / `AP` tables.
 
@@ -128,10 +128,6 @@ These were not defined in the workbook and were chosen to make the dates computa
 
 ## Known issues
 
-**`Reminder Date` still exists in the deployed table and is populated.** The design decision was to drop the pre-computed column and use Lark's built-in "N days before" offset instead, and the CSVs in `data/` reflect that. The live table does not. Either an earlier CSV was imported, or the column was re-added. Worth resolving: if `Input_Reminder` and `Process` trigger on `Reminder Date` while this repo says they trigger on `Start Date`, the table and the documentation will drift apart at the next rebuild.
-
-**The Grid view on `Payroll_Calendar_Events` has a filter showing one client.** At time of writing it displayed 30 CTP Infotech Malaysia records. Fine for testing, but anyone opening the Grid view will think the table only holds one client. Consider renaming the view to something explicit, or clearing the filter and building per-assignee views instead.
-
 **Daily-run clients flood the AP channel.** Framework Studio, Oneness Concept Wellness and Nu Best run every working day and generate roughly 390 of the 814 AP events. With `Due-day_push` firing per record, that is three messages every morning from those clients alone. A consolidated daily digest would be a better fit.
 
 **No payment-specific safeguard.** `Salary Payment` and AP bank upload are the steps where money moves, and they get the same treatment as every other step. `P4` and `A2` were designed for exactly this and were not deployed. A missed payroll approval is not the same class of miss as a late listing update.
@@ -146,17 +142,6 @@ These were not defined in the workbook and were chosen to make the dates computa
 
 **Eight AP clients out of scope.** NVD Logistics, NVD Asia Logistics Taiwan, Juice Work, Leax Malaysia, Leax Asia (Gamma), Master Jaya Environment (Sigma), Shyunmija, The Lush Clinic (Omega). Their `AP Remarks` records an owner to confirm with rather than a schedule, so no dates could be derived. Excluded from the deployed tables.
 
----
-
-## Undocumented
-
-Not readable from the Base UI and not yet captured here:
-
-- Exact trigger offsets, times and conditions on each of the six automations
-- Which date field each automation actually triggers on (`Start Date` or `Reminder Date`)
-- The purpose and schema of `Payroll_Calendar_Period`, and how it relates to `Payroll_Calendar_Events`
-- Whether `AP_Calendar_each-day` has calendar and Gantt views, or Grid only
-- Live record counts against the 1,452 / 814 figures in `data/`
 
 ---
 
